@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>siyam-os</title>
+    <!-- Tailwind for quick, clean layout utilities -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Retro terminal base styles */
+        body {
+            background-color: #050505;
+            color: #00ff66;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        }
+
+        /* Subtle glowing text effect */
+        .terminal-glow {
+            text-shadow: 0 0 4px rgba(0, 255, 102, 0.4);
+        }
+
+        /* Blinking block cursor */
+        .cursor {
+            width: 8px;
+            height: 16px;
+            background: #00ff66;
+            display: inline-block;
+            animation: blink 1s steps(2, start) infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            to {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body class="p-4 h-screen flex flex-col select-none" onclick="document.getElementById('terminal-input').focus()">
+
+    <!-- Main output container -->
+    <div id="terminal-output" class="flex-1 overflow-y-auto space-y-2 text-sm terminal-glow">
+        <div>siyam-os v1.0.0 [Stardance Mission]</div>
+        <div>Type <span class="text-white font-bold">help</span> to view available commands.</div>
+        <div id="history"></div>
+    </div>
+
+    <!-- Command line input form -->
+    <form id="terminal-form" class="flex items-center mt-2 pt-2 border-t border-zinc-900">
+        <span class="mr-2 text-emerald-500 font-bold">$</span>
+        <input type="text" id="terminal-input" class="bg-transparent outline-none flex-1 text-emerald-400 font-mono"
+            autofocus autocomplete="off" spellcheck="false">
+        <span class="cursor"></span>
+    </form>
+
+    <script>
+        // Grab elements
+        const formEl = document.getElementById('terminal-form');
+        const inputEl = document.getElementById('terminal-input');
+        const historyEl = document.getElementById('history');
+        const outputContainer = document.getElementById('terminal-output');
+
+        // Handle form submission and command parsing
+        formEl.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const rawCommand = inputEl.value;
+            const cleanCommand = rawCommand.trim().toLowerCase();
+
+            if (!cleanCommand) return;
+
+            // Echo user input to the history log
+            const userEcho = document.createElement('div');
+            userEcho.innerHTML = `<span class="text-emerald-600">$</span> ${escapeHtml(rawCommand)}`;
+            historyEl.appendChild(userEcho);
+
+            // Create response container
+            const responseDiv = document.createElement('div');
+            responseDiv.className = 'mb-2 text-emerald-300';
+
+            // Route commands
+            switch (cleanCommand) {
+                case 'help':
+                    responseDiv.innerHTML = `Available commands:<br>
+                      - <span class="text-white">help</span>      : List all commands<br>
+                      - <span class="text-white">date</span>      : Display current system date<br>
+                      - <span class="text-white">time</span>      : Display current system time<br>
+                      - <span class="text-white">fastfetch</span> : View system specs &amp; OS ASCII art<br>
+                      - <span class="text-white">clear</span>     : Clear the terminal screen`;
+                    break;
+
+                case 'date':
+                    responseDiv.textContent = `Date: ${new Date().toLocaleDateString()}`;
+                    break;
+
+                case 'time':
+                    responseDiv.textContent = `Time: ${new Date().toLocaleTimeString()}`;
+                    break;
+
+                case 'fastfetch':
+                    // Upgraded ASCII artwork and sleek system info layout
+                    responseDiv.innerHTML = `<pre class="text-emerald-400 leading-tight font-mono text-xs sm:text-sm">
+    ███████╗██╗██╗   ██╗ █████╗ ███╗   ███╗      ██████╗ ███████╗
+    ██╔════╝██║╚██╗ ██╔╝██╔══██╗████╗ ████║     ██╔═══██╗██╔════╝
+    ███████╗██║ ╚████╔╝ ███████║██╔████╔██║     ██║   ██║███████╗
+    ╚════██║██║  ╚██╔╝  ██╔══██║██║╚██╔╝██║     ██║   ██║╚════██║
+    ███████║██║   ██║   ██║  ██║██║ ╚═╝ ██║     ╚██████╔╝███████║
+    ╚══════╝╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝     ╚═╝      ╚═════╝ ╚══════╝
+-----------------------------------------------------------------
+OS: siyam-os (Stardance Mission)
+Kernel: Web-Terminal v1.0
+Status: Active &amp; Operational
+Hardware: Optimal / Nominal
+Shell: web-sh
+-----------------------------------------------------------------</pre>`;
+                    break;
+
+                case 'clear':
+                    historyEl.innerHTML = '';
+                    inputEl.value = '';
+                    return;
+
+                default:
+                    responseDiv.className = 'text-rose-500 mb-2';
+                    responseDiv.textContent = `Command not recognized: "${cleanCommand}". Type "help" for a list of valid commands.`;
+                    break;
+            }
+
+            // Append response and clean up input
+            historyEl.appendChild(responseDiv);
+            inputEl.value = '';
+
+            // Auto-scroll to bottom smoothly
+            outputContainer.scrollTop = outputContainer.scrollHeight;
+        });
+
+        // Simple HTML entity escape to prevent code injection
+        function escapeHtml(text) {
+            return text.replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;");
+        }
+    </script>
+</body>
+
+</html>

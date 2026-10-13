@@ -1,0 +1,26 @@
+   body {
+       background: #000;
+       display: flex;
+       justify-content: center;
+       align-items: center;
+       height: 100vh;
+       margin: 0;
+       color: #fff;
+       font-family: monospace;
+       overflow: hidden;
+   }
+
+   canvas {
+       border: 1px solid #333;
+       background: #111;
+   }
+
+   #b {
+       position: absolute;
+       padding: 10px 20px;
+       background: #222;
+       color: #fff;
+       border: 1px solid #555;
+       cursor: pointer;
+       font-size: 16px;
+   }
