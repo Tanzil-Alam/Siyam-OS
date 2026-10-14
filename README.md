@@ -1,5 +1,5 @@
 # Siyam-OS
-Welcome to WebOS, a fully functional, lightweight desktop environment running entirely inside your browser, built using HTML, CSS, and vanilla JavaScript for the Hack Club Stardance event. This retro-modern web operating system is proudly crafted with human-written code, complemented by minor AI assistance. It features an interactive desktop environment complete with draggable and resizable windows, a custom taskbar, a start menu, a live clock, and personalizable themes. Users can interact with a variety of built-in applications, including a custom command-line terminal emulator with a simulated file system, retro mini-games, a simulated web browser interface, a file manager, and a text editor. Designed with zero heavy frameworks, WebOS relies solely on pure, optimized HTML5, CSS3, and JavaScript (ES6+) for blazing-fast performance without requiring complex installation steps or external build tools.
+This is WebOs. An operating system who runs in a website. It has games and other things that you need. its made for stardance mission. I used a API key for changing background image in every reload. It also has time and date support. Fastfetch in the terminal shows system details. You can check it here,
 
 Live Preview : https://tanzil-alam.github.io/Siyam-OS/
 
